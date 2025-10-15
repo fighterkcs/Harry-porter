@@ -1,0 +1,9 @@
+langchain
+langchain-community
+pypdf
+sentence-transformers
+transformers
+faiss-cpu
+torch
+PyMuPDF
+textwrap3
