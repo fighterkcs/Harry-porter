@@ -30,8 +30,8 @@ if st.button("Get Answer"):
         st.warning("Please enter a question!")
     else:
         with st.spinner("Thinking... 🧠"):
-            if similarity_score < 0.65:
+            if similarity_score < 0.4:  # was 0.65
                 st.write("Your query is out of context for the documents.")
-            else:  
-                answer = retrieve_and_answer(query, embed_model, index, chunks, qa_pipe)  # LLM gets only relevant chunks
+            else:
+                answer = retrieve_and_answer(query, embed_model, index, chunks, qa_pipe)
                 st.write(answer)
