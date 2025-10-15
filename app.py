@@ -17,10 +17,21 @@ embed_model, index, chunks, qa_pipe = load_pipeline()
 # User input
 query = st.text_input("🔍 Ask your question:")
 
+# Compute similarity score for the top chunk
+if query.strip():
+    query_embedding = embed_model.encode([query])
+    D, I = index.search(query_embedding, 1)  # 1 = top result
+    similarity_score = 1 / (1 + D[0][0]) if D[0][0] > 0 else 1.0  # Convert distance to similarity (simple heuristic)
+else:
+    similarity_score = 0
+
 if st.button("Get Answer"):
     if query.strip() == "":
         st.warning("Please enter a question!")
     else:
         with st.spinner("Thinking... 🧠"):
-            answer = retrieve_and_answer(query, embed_model, index, chunks, qa_pipe)
-            st.success(answer)
+            if similarity_score < 0.65:
+                st.write("Your query is out of context for the documents.")
+            else:  
+                answer = retrieve_and_answer(query, embed_model, index, chunks, qa_pipe)  # LLM gets only relevant chunks
+                st.write(answer)
