@@ -4,7 +4,7 @@ import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader, TextLoader
 
 
 def load_all_pdfs(data_folder):
@@ -15,6 +15,12 @@ def load_all_pdfs(data_folder):
             pdf_path = os.path.join(data_folder, file_name)
             print(f"📘 Loading: {file_name}")
             loader = PyPDFLoader(pdf_path)
+            docs = loader.load()
+            documents.extend(docs)
+        elif file_name.endswith(".txt"):
+            txt_path = os.path.join(data_folder, file_name)
+            print(f"📄 Loading: {file_name}")
+            loader = TextLoader(txt_path, encoding='utf-8')
             docs = loader.load()
             documents.extend(docs)
 

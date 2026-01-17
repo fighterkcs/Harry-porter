@@ -7,3 +7,5 @@ faiss-cpu
 torch
 PyMuPDF
 textwrap3
+huggingface_hub
+python-dotenv
